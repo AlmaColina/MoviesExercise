@@ -3,6 +3,7 @@ package com.example.proyecto1_almacolina
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.proyecto1_almacolina.databinding.MeaningRecyclerRowBinding
 
@@ -38,8 +39,11 @@ class MeaningAdapter(private var meaningList : List<Meaning>) : RecyclerView.Ada
     }
 
     fun updateNewData(newMeaningList : List<Meaning>){
+        //meaningList = newMeaningList
+        //notifyDataSetChanged()
+        val diffResult = DiffUtil.calculateDiff(MeaningDiffCallback(meaningList, newMeaningList))
         meaningList = newMeaningList
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MeaningViewHolder {
@@ -53,6 +57,23 @@ class MeaningAdapter(private var meaningList : List<Meaning>) : RecyclerView.Ada
 
     override fun onBindViewHolder(holder: MeaningViewHolder, index: Int) {
         holder.bind(meaningList[index])
+    }
+
+    class MeaningDiffCallback(
+        private val oldList: List<Meaning>,
+        private val newList: List<Meaning>
+    ) : DiffUtil.Callback() {
+        override fun getOldListSize() = oldList.size
+
+        override fun getNewListSize() = newList.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition].partOfSpeech == newList[newItemPosition].partOfSpeech
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
+        }
     }
 
 

@@ -5,10 +5,10 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.DefaultItemAnimator
 import com.example.proyecto1_almacolina.databinding.ActivityMainBinding
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,6 +28,13 @@ class MainActivity : AppCompatActivity() {
         adapter = MeaningAdapter(emptyList())
         binding.meaningRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.meaningRecyclerView.adapter = adapter
+
+        // Configurar el ItemAnimator
+        val animator = DefaultItemAnimator().apply {
+            addDuration = 500
+            removeDuration = 500
+        }
+        binding.meaningRecyclerView.itemAnimator = animator
     }
 
     private fun getMeaning(word : String){
@@ -58,7 +65,6 @@ class MainActivity : AppCompatActivity() {
         binding.phoneticTextview.text = response.phonetic
         adapter.updateNewData(response.meanings)
     }
-
 
     private fun setInProgress(inProgress: Boolean) {
         if (inProgress) {
