@@ -31,8 +31,8 @@ class MainActivity : AppCompatActivity() {
 
         // Configurar el ItemAnimator
         val animator = DefaultItemAnimator().apply {
-            addDuration = 500
-            removeDuration = 500
+            addDuration = 550
+            removeDuration = 550
         }
         binding.meaningRecyclerView.itemAnimator = animator
     }
